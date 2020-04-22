@@ -6,13 +6,17 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Archives: 2020/4 | slyfox1201的博客</title>
+  <title>javaIO-文件操作 | slyfox1201的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="slyfox1201的博客">
-<meta property="og:url" content="http://yoursite.com/archives/2020/04/index.html">
+  <meta name="description" content="原文地址  https:&#x2F;&#x2F;how2j.cn?p&#x3D;124956   1.创建File的两种方式">
+<meta property="og:type" content="article">
+<meta property="og:title" content="javaIO-文件操作">
+<meta property="og:url" content="http://yoursite.com/2020/04/22/javaIO-%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C/index.html">
 <meta property="og:site_name" content="slyfox1201的博客">
+<meta property="og:description" content="原文地址  https:&#x2F;&#x2F;how2j.cn?p&#x3D;124956   1.创建File的两种方式">
 <meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-04-22T02:14:58.225Z">
+<meta property="article:modified_time" content="2020-04-22T02:43:45.324Z">
 <meta property="article:author" content="slyfox1201">
 <meta name="twitter:card" content="summary">
   
@@ -150,238 +154,198 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-javaIO-文件操作" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2020" class="archive-year">2020</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/04/22/java%E4%B8%AD%E6%96%87%E7%BC%96%E7%A0%81/" class="archive-article-date">
-  	<time datetime="2020-04-22T02:41:25.301Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-04-22</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/04/22/java%E4%B8%AD%E6%96%87%E7%BC%96%E7%A0%81/">java中文编码</a>
+    <h1 class="article-title" itemprop="name">
+      javaIO-文件操作
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/04/22/javaIO-%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C/" class="archive-article-date">
+        
+        <a href="/2020/04/22/javaIO-%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C/" class="archive-article-date">
   	<time datetime="2020-04-22T02:14:58.225Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-04-22</time>
 </a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/04/22/javaIO-%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C/">javaIO-文件操作</a>
-    </h1>
-  
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>原文地址  <a href="https://how2j.cn?p=124956" target="_blank" rel="noopener">https://how2j.cn?p=124956</a>  </p>
+<p><strong>1.创建File的两种方式</strong></p>
+<a id="more"></a>
 
-        <div class="article-info info-on-right">
-          
-          
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main1</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 直接创建</span></span><br><span class="line">        File file1 = <span class="keyword">new</span> File(<span class="string">"a"</span>);</span><br><span class="line">        System.out.println(file1.getAbsolutePath());</span><br><span class="line">        <span class="comment">// 拼接创建</span></span><br><span class="line">        File file2 = <span class="keyword">new</span> File(<span class="string">"b.txt"</span>);</span><br><span class="line">        System.out.println(file2.getAbsolutePath());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
+<p><strong>2.File常用方法</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestFile</span> </span>&#123;</span><br><span class="line">  </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">  </span><br><span class="line">        File f = <span class="keyword">new</span> File(<span class="string">"d:/LOLFolder/LOL.exe"</span>);</span><br><span class="line">        System.out.println(<span class="string">"当前文件是："</span> +f);</span><br><span class="line">        <span class="comment">//文件是否存在</span></span><br><span class="line">        System.out.println(<span class="string">"判断是否存在："</span>+f.exists());</span><br><span class="line">         </span><br><span class="line">        <span class="comment">//是否是文件夹</span></span><br><span class="line">        System.out.println(<span class="string">"判断是否是文件夹："</span>+f.isDirectory());</span><br><span class="line">          </span><br><span class="line">        <span class="comment">//是否是文件（非文件夹）</span></span><br><span class="line">        System.out.println(<span class="string">"判断是否是文件："</span>+f.isFile());</span><br><span class="line">          </span><br><span class="line">        <span class="comment">//文件长度</span></span><br><span class="line">        System.out.println(<span class="string">"获取文件的长度："</span>+f.length());</span><br><span class="line">          </span><br><span class="line">        <span class="comment">//文件最后修改时间</span></span><br><span class="line">        <span class="keyword">long</span> time = f.lastModified();</span><br><span class="line">        Date d = <span class="keyword">new</span> Date(time);</span><br><span class="line">        System.out.println(<span class="string">"获取文件的最后修改时间："</span>+d);</span><br><span class="line">        <span class="comment">//设置文件修改时间为1970.1.1 08:00:00</span></span><br><span class="line">        f.setLastModified(<span class="number">0</span>);</span><br><span class="line">          </span><br><span class="line">        <span class="comment">//文件重命名</span></span><br><span class="line">        File f2 =<span class="keyword">new</span> File(<span class="string">"d:/LOLFolder/DOTA.exe"</span>);</span><br><span class="line">        f.renameTo(f2);</span><br><span class="line">        System.out.println(<span class="string">"把LOL.exe改名成了DOTA.exe"</span>);</span><br><span class="line">         </span><br><span class="line">        System.out.println(<span class="string">"注意： 需要在D:\\LOLFolder确实存在一个LOL.exe,\r\n才可以看到对应的文件长度、修改时间等信息"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestFile</span> </span>&#123;</span><br><span class="line">  </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">  </span><br><span class="line">        File f = <span class="keyword">new</span> File(<span class="string">"d:/LOLFolder/skin/garen.ski"</span>);</span><br><span class="line">  </span><br><span class="line">        <span class="comment">// 以字符串数组的形式，返回当前文件夹下的所有文件（不包含子文件及子文件夹）</span></span><br><span class="line">        f.list();</span><br><span class="line">  </span><br><span class="line">        <span class="comment">// 以文件数组的形式，返回当前文件夹下的所有文件（不包含子文件及子文件夹）</span></span><br><span class="line">        File[]fs= f.listFiles();</span><br><span class="line">  </span><br><span class="line">        <span class="comment">// 以字符串形式返回获取所在文件夹</span></span><br><span class="line">        f.getParent();</span><br><span class="line">  </span><br><span class="line">        <span class="comment">// 以文件形式返回获取所在文件夹</span></span><br><span class="line">        f.getParentFile();</span><br><span class="line">        <span class="comment">// 创建文件夹，如果父文件夹skin不存在，创建就无效</span></span><br><span class="line">        f.mkdir();</span><br><span class="line">  </span><br><span class="line">        <span class="comment">// 创建文件夹，如果父文件夹skin不存在，就会创建父文件夹</span></span><br><span class="line">        f.mkdirs();</span><br><span class="line">  </span><br><span class="line">        <span class="comment">// 创建一个空文件,如果父文件夹skin不存在，就会抛出异常</span></span><br><span class="line">        f.createNewFile();</span><br><span class="line">        <span class="comment">// 所以创建一个空文件之前，通常都会创建父目录</span></span><br><span class="line">        f.getParentFile().mkdirs();</span><br><span class="line">  </span><br><span class="line">        <span class="comment">// 列出所有的盘符c: d: e: 等等</span></span><br><span class="line">        f.listRoots();</span><br><span class="line">  </span><br><span class="line">        <span class="comment">// 刪除文件</span></span><br><span class="line">        f.delete();</span><br><span class="line">  </span><br><span class="line">        <span class="comment">// JVM结束的时候，刪除文件，常用于临时文件的删除</span></span><br><span class="line">        f.deleteOnExit();</span><br><span class="line">  </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>3.练习题</strong></p>
+<p>给出一个文件夹，遍历该文件夹及其子文件夹，找出其中最大的文件与最小的文件</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main4</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">long</span> minSize = Integer.MAX_VALUE;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">long</span> maxSize = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">static</span> File minFile = <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">static</span> File maxFile = <span class="keyword">null</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">listFiles</span><span class="params">(File file)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (file.isFile()) &#123;</span><br><span class="line">            <span class="keyword">if</span> (file.length() &gt; maxSize) &#123;</span><br><span class="line">                maxSize = file.length();</span><br><span class="line">                maxFile = file;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (file.length() != <span class="number">0</span> &amp;&amp; file.length() &lt; minSize) &#123;</span><br><span class="line">                minSize = file.length();</span><br><span class="line">                minFile = file;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (file.isDirectory()) &#123;</span><br><span class="line">            File[] files = file.listFiles();</span><br><span class="line">            <span class="keyword">if</span> (<span class="keyword">null</span> != files) &#123;</span><br><span class="line">                <span class="keyword">for</span> (File f : files) &#123;</span><br><span class="line">                    listFiles(f);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        File file = <span class="keyword">new</span> File(<span class="string">"d:/blog"</span>);</span><br><span class="line">        listFiles(file);</span><br><span class="line">        System.out.printf(<span class="string">"最大的文件是%s，其大小是%,d字节%n"</span>,</span><br><span class="line">                          maxFile.getAbsoluteFile(),</span><br><span class="line">                          maxFile.length());</span><br><span class="line">        System.out.printf(<span class="string">"最小的文件是%s，其大小是%,d字节%n"</span>,</span><br><span class="line">                          minFile.getAbsoluteFile(),</span><br><span class="line">                          minFile.length());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/assets/img/wechat.png">
+                      <span class="reward-type">微信</span>
+                    </div>
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
+        </div>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2020/04/22/javaIO-%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/04/21/java%E5%BC%82%E5%B8%B8/" class="archive-article-date">
-  	<time datetime="2020-04-21T09:25:48.624Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-04-21</time>
-</a>
+<nav id="article-nav">
+  
+    <a href="/2020/04/22/java%E4%B8%AD%E6%96%87%E7%BC%96%E7%A0%81/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          java中文编码
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/04/21/java%E5%BC%82%E5%B8%B8/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">java异常</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/04/21/java%E5%BC%82%E5%B8%B8/">java异常</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-
+        
+        
+        <div class="toc-container tooltip-left">
+            <i class="icon-font icon-category"></i>
+            <div class="tooltip tooltip-east">
+                <span class="tooltip-item">
+                </span>
+                <span class="tooltip-content">
+                    <div class="toc-article">
+                    目录，不存在的…
+                    </div>
+                </span>
+            </div>
         </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
+        
+    </div>
+</aside>
+
+
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/04/21/java%E5%9F%BA%E7%A1%80/" class="archive-article-date">
-  	<time datetime="2020-04-21T08:57:32.237Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-04-21</time>
-</a>
-        </div>
-    	 
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/04/21/java%E5%9F%BA%E7%A1%80/">java基础</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/04/21/github%E5%85%A5%E9%97%A8%E9%85%8D%E7%BD%AE/" class="archive-article-date">
-  	<time datetime="2020-04-21T02:10:53.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-04-21</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/04/21/github%E5%85%A5%E9%97%A8%E9%85%8D%E7%BD%AE/">github入门配置</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/04/20/%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2/" class="archive-article-date">
-  	<time datetime="2020-04-20T11:24:19.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-04-20</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/04/20/%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2/">如何搭建博客</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/04/20/test/" class="archive-article-date">
-  	<time datetime="2020-04-19T21:17:48.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-04-20</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/04/20/test/">test</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/04/20/hello-world/" class="archive-article-date">
-  	<time datetime="2020-04-19T21:12:39.067Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-04-20</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/04/20/hello-world/">Hello World</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
-
-    
 
 
           </div>
@@ -407,8 +371,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,
