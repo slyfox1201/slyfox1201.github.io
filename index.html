@@ -152,6 +152,276 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-java泛型02" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/04/23/java%E6%B3%9B%E5%9E%8B02/">java泛型02</a>
+    </h1>
+  
+
+        
+        <a href="/2020/04/23/java%E6%B3%9B%E5%9E%8B02/" class="archive-article-date">
+  	<time datetime="2020-04-23T14:23:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-04-23</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>​    原文链接：     <a href="https://www.cnblogs.com/cherryljr/p/6880657.html" target="_blank" rel="noopener">https://www.cnblogs.com/cherryljr/p/6880657.html</a> </p>
+<p>​        在观察Java源码的时候，发现了这么一个写法T extends Comparable&lt;? super T&gt;。不禁纳闷为什么要这么写呢？有什么好处吗，extends和super在这里的作用着实让人有点不清楚。</p>
+<p>　　接下来，我将结合代码跟大家分享一下我关于这里泛型应用的看法。</p>
+<p>　　</p>
+<p>　　<strong>1.</strong>  <strong>&lt;T extends Comparable&lt;? super T&gt;&gt;代表什么意思</strong></p>
+<ul>
+<li>大家可以明白的是这里应用到了Java的泛型，那么首先向大家说明一下这里extends的作用</li>
+</ul>
+<p>　　extends后面跟的类型，如&lt;任意字符 extends 类/接口&gt;表示泛型的上限。示例代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Demo</span>&lt;<span class="title">T</span> <span class="keyword">extends</span> <span class="title">List</span>&gt;</span>&#123;&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    Demo&lt;ArrayList&gt; p = <span class="keyword">null</span>; <span class="comment">// 编译正确</span></span><br><span class="line"><span class="comment">//这里因为ArrayList是List的子类所以通过</span></span><br><span class="line"><span class="comment">//如果改为Demo&lt;Collection&gt; p = null;就会报错这样就限制了上限</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>在理解了extends所表示的泛型的上限后，接下来介绍一下super的作用，它与extends相反，表示的是泛型的下限。</li>
+<li>所以结合上述两点，我们来分析一下这句话整体代表什么意思。首先，extends对泛型上限进行了限制即T必须是Comparable&lt;? super T&gt;的子类，然后&lt;? super T&gt;表示Comparable&lt;&gt;中的类型下限为T！</li>
+</ul>
+<p>　</p>
+<p>　　<strong>2.  &lt;T extends Comparable<T>&gt; 和 &lt;T extends Comparable&lt;? super T&gt;&gt; 有什么不同</T></strong></p>
+<p>　　接下来我们通过对比，使得大家对为何要这样编写代码有更加深刻的印象。</p>
+<ul>
+<li><strong>&lt;T extends Comparable<T>&gt;</T></strong></li>
+</ul>
+<p>　　它代表的意思是：类型T必须实现<code>Comparable</code>接口，并且这个接口的类型是T。这样，T的实例之间才能相互比较大小。这边我们以Java中GregorianCalendar这个类为例。</p>
+<p>　　代码如下所示：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.GregorianCalendar;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Demo</span>&lt;<span class="title">T</span> <span class="keyword">extends</span> <span class="title">Comparable</span>&lt;<span class="title">T</span>&gt;&gt;</span>&#123;&#125;</span><br><span class="line"><span class="comment">//注意这里是没有? super的</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">       Demo&lt;GregorianCalendar&gt; p = <span class="keyword">null</span>; </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　这里编译报错，因为这里的&lt;T extends Comparable<T>&gt;相当于&lt;GregorianCalendar extends Comparable<GregorianCalendar>&gt;,但是GregorianCalendar中并没有实现Comparable<GregorianCalendar>，而是仅仅持有从Calendar继承过来的Comparable<Calendar>，这样就会因为不在限制范围内而报错。</Calendar></GregorianCalendar></GregorianCalendar></T></p>
+<ul>
+<li><strong>&lt;T extends Comparable&lt;? super T&gt;&gt;</strong>　　</li>
+</ul>
+<p>　　它代表的意思是：类型T必须实现<code>Comparable</code>接口，并且这个接口的类型是T或者是T的任一父类。这样声明后，T的实例之间和T的父类的实例之间可以相互比较大小。同样还是以GregorianCalendar为例。代码如下所示：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.GregorianCalendar;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Demo</span>&lt;<span class="title">T</span> <span class="keyword">extends</span> <span class="title">Comparable</span>&lt;? <span class="title">super</span> <span class="title">T</span>&gt;&gt;</span>&#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test1</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">       Demo&lt;GregorianCalendar&gt; p = <span class="keyword">null</span>; <span class="comment">// 编译正确</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　此时编译通过，这里可以理解为&lt;GregorianCalendar extends Comparable<Calendar>&gt;！因为Calendar为GregorianCalendar 的父类并且GregorianCalendar 实现了Comparable<Calendar>,具体可以在API中进行查看！</Calendar></Calendar></p>
+<p>　　<strong>3.　实例代码演示</strong></p>
+<p>　　代码如下所示：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.ArrayList;</span><br><span class="line"><span class="keyword">import</span> java.util.Collections;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="comment">//第一种声明：简单，灵活性低</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> &lt;T extends Comparable&lt;T&gt;&gt; <span class="function"><span class="keyword">void</span> <span class="title">mySort1</span><span class="params">(List&lt;T&gt; list)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        Collections.sort(list);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//第二种声明：复杂，灵活性高</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> &lt;T extends Comparable&lt;? <span class="keyword">super</span> T&gt;&gt; <span class="function"><span class="keyword">void</span> <span class="title">mySort2</span><span class="params">(List&lt;T&gt; l)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        Collections.sort(list);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="comment">//主函数中将分别创建Animal和Dog两个序列，然后调用排序方法对其进行测试　　　　　//main函数中具体的两个版本代码将在下面具体展示</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Animal</span> <span class="keyword">implements</span> <span class="title">Comparable</span>&lt;<span class="title">Animal</span>&gt;</span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">int</span> age;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Animal</span><span class="params">(<span class="keyword">int</span> age)</span></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.age = age;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//使用年龄与另一实例比较大小</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">compareTo</span><span class="params">(Animal other)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.age - other.age;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Dog</span> <span class="keyword">extends</span> <span class="title">Animal</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Dog</span><span class="params">(<span class="keyword">int</span> age)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(age);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面的代码包括三个类：</p>
+<ol>
+<li><code>Animal</code>实现了<code>Comparable&lt;Animal&gt;</code>接口，通过年龄来比较实例的大小</li>
+<li>Dog从Animal继承，为其子类。</li>
+<li><code>Test</code>类中提供了两个排序方法和测试用的<code>main()</code>方法：<ul>
+<li><code>mySort1()</code>使用<code>&lt;T extends Comparable&lt;T&gt;&gt;</code>类型参数</li>
+<li><code>mySort2()</code>使用<code>&lt;T extends Comparable&lt;? super T&gt;&gt;</code>类型参数</li>
+<li><code>main()</code>测试方法。在这里将分别创建Animal和Dog两个序列，然后调用排序方法对其进行测试。</li>
+</ul>
+</li>
+</ol>
+<p>　　<strong>3.1　对mySort1()进行测试，main方法代码如下所示：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 创建一个 Animal List</span></span><br><span class="line">List&lt;Animal&gt; animals = <span class="keyword">new</span> ArrayList&lt;Animal&gt;();</span><br><span class="line">animals.add(<span class="keyword">new</span> Animal(<span class="number">25</span>));</span><br><span class="line">animals.add(<span class="keyword">new</span> Dog(<span class="number">35</span>));</span><br><span class="line"></span><br><span class="line"><span class="comment">// 创建一个 Dog List</span></span><br><span class="line">List&lt;Dog&gt; dogs = <span class="keyword">new</span> ArrayList&lt;Dog&gt;();</span><br><span class="line">dogs.add(<span class="keyword">new</span> Dog(<span class="number">5</span>));</span><br><span class="line">dogs.add(<span class="keyword">new</span> Dog(<span class="number">18</span>));</span><br><span class="line"></span><br><span class="line"><span class="comment">// 测试  mySort1() 方法</span></span><br><span class="line">mySort1(animals);</span><br><span class="line">mySort1(dogs);</span><br></pre></td></tr></table></figure>
+
+<p>　　结果编译出错，报错信息为：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">The method <span class="title">mySort1</span><span class="params">(List&lt;T&gt;)</span> in the type TypeParameterTest is not applicable <span class="keyword">for</span> the <span class="title">arguments</span> <span class="params">(List&lt;Dog&gt;)</span></span></span><br></pre></td></tr></table></figure>
+
+<p>　　mySort1() 方法的类型参数是&lt;T extends Comparable<T>&gt;，它要求的类型参数是类型为T的Comparable。</T></p>
+<p>　　如果传入的是List<Animal>程序将正常执行，因为Animal实现了接口Comparable<Animal>。</Animal></Animal></p>
+<p>　　但是，如果传入的参数是List<Dog>程序将报错，因为Dog类中没有实现接口Comparable<Dog>，它只从Animal继承了一个Comparable<Animal>接口。</Animal></Dog></Dog></p>
+<p>　　注意：animals list中实际上是包含一个Dog实例的。如果碰上类似的情况（子类list不能传入到一个方法中），可以考虑把子类实例放到一个父类 list 中，避免编译错误。</p>
+<p>　　<strong>3.2　对mySort12()进行测试，main方法代码如下所示：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// 创建一个 Animal List</span></span><br><span class="line">    List&lt;Animal&gt; animals = <span class="keyword">new</span> ArrayList&lt;Animal&gt;();</span><br><span class="line">    animals.add(<span class="keyword">new</span> Animal(<span class="number">25</span>));</span><br><span class="line">    animals.add(<span class="keyword">new</span> Dog(<span class="number">35</span>));</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 创建一个 Dog List</span></span><br><span class="line">    List&lt;Dog&gt; dogs = <span class="keyword">new</span> ArrayList&lt;Dog&gt;();</span><br><span class="line">    dogs.add(<span class="keyword">new</span> Dog(<span class="number">5</span>));</span><br><span class="line">    dogs.add(<span class="keyword">new</span> Dog(<span class="number">18</span>));</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 测试  mySort2() 方法</span></span><br><span class="line">    mySort2(animals);</span><br><span class="line">    mySort2(dogs);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　这时候我们发现该程序可以正常运行。它不但能够接受Animal implements Comparable<Animal>这样的参数，也可以接收：Dog implements Comparable<Animal>这样的参数。</Animal></Animal></p>
+<p>　　<strong>3.3　是否可以通过将Dog实现Comparable<Dog>来解决问题？</Dog></strong></p>
+<p>　　由分析可得程序出现问题是因为Dog类没有实现接口Comparable<Dog>，那么我们能否将该类实现接口Comparable<Dog>来解决问题呢？</Dog></Dog></p>
+<p>　　代码如下所示：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Dog</span> <span class="keyword">extends</span> <span class="title">Animal</span> <span class="keyword">implements</span> <span class="title">Comparable</span>&lt;<span class="title">Dog</span>&gt;</span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Dog</span><span class="params">(<span class="keyword">int</span> age)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(age);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　结果程序编译报错，错误信息如下所示：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">The interface Comparable cannot be implemented more than once with different arguments: Comparable&lt;Animal&gt; and Comparable&lt;Dog&gt;</span><br></pre></td></tr></table></figure>
+
+<p>　　意义是Dog类已经从Animal中继承了Comparable该接口，无法再实现一个Comparable。</p>
+<p>　　若子类需要使用自己的比较方法，则需要重写父类的public int CompareTo(Animal other)方法。</p>
+<p>　　<strong>4. 总结</strong>　</p>
+<p>　　对Animal/Dog这两个有父子关系的类来说：<code>&lt;T extends Comparable&lt;? super T&gt;&gt;</code>可以接受List<Animal>，也可以接收 List<Dog> 。而<code>&lt;T extends Comparable&lt;T&gt;&gt;</code>只可以接收 List<Animal>所以，&lt;T extends Comparable&lt;? super T&gt;&gt;这样的类型参数对所传入的参数限制更少，提高了 API 的灵活性。总的来说，在保证类型安全的前提下，要使用限制最少的类型参数。</Animal></Dog></Animal></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">java</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/04/23/java%E6%B3%9B%E5%9E%8B02/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+
+  
+    <article id="post-java泛型01" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/04/23/java%E6%B3%9B%E5%9E%8B01/">java泛型01</a>
+    </h1>
+  
+
+        
+        <a href="/2020/04/23/java%E6%B3%9B%E5%9E%8B01/" class="archive-article-date">
+  	<time datetime="2020-04-23T14:07:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-04-23</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>1.通配符 ?</strong></p>
+<p>&lt;? extends Hero&gt;</p>
+<p>?只能是一个值，即该值是Hero，或者是ADHero，或者是APHero</p>
+<ul>
+<li><strong>? extends</strong></li>
+</ul>
+<p>ArrayList heroList&lt;? extends Hero&gt; 表示这是一个Hero泛型或者其子类泛型<br>heroList 的泛型可能是Hero<br>heroList 的泛型可能是APHero<br>heroList 的泛型可能是ADHero<br>所以 可以确凿的是，<strong>从heroList取出来的对象，一定是可以转型成Hero的</strong></p>
+<p>但是，不能往里面放东西，因为<br>放APHero就不满足<ADHero><br>放ADHero又不满足<APHero>  </APHero></ADHero></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestGeneric</span> </span>&#123;</span><br><span class="line">   </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">          </span><br><span class="line">        ArrayList&lt;APHero&gt; apHeroList = <span class="keyword">new</span> ArrayList&lt;APHero&gt;();</span><br><span class="line">        apHeroList.add(<span class="keyword">new</span> APHero());</span><br><span class="line">         </span><br><span class="line">        ArrayList&lt;? extends Hero&gt; heroList = apHeroList;</span><br><span class="line">          </span><br><span class="line">        <span class="comment">//? extends Hero 表示这是一个Hero泛型的子类泛型</span></span><br><span class="line">          </span><br><span class="line">        <span class="comment">//heroList 的泛型可以是Hero</span></span><br><span class="line">        <span class="comment">//heroList 的泛型可以使APHero</span></span><br><span class="line">        <span class="comment">//heroList 的泛型可以使ADHero</span></span><br><span class="line">          </span><br><span class="line">        <span class="comment">//可以确凿的是，从heroList取出来的对象，一定是可以转型成Hero的</span></span><br><span class="line">          </span><br><span class="line">        Hero h= heroList.get(<span class="number">0</span>);</span><br><span class="line">          </span><br><span class="line">        <span class="comment">//但是，不能往里面放东西</span></span><br><span class="line">        heroList.add(<span class="keyword">new</span> ADHero()); <span class="comment">//编译错误，因为heroList的泛型 有可能是APHero</span></span><br><span class="line">          </span><br><span class="line">    &#125;</span><br><span class="line">      </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>? super</strong></li>
+</ul>
+<p>ArrayList heroList&lt;? super Hero&gt; 表示这是一个Hero泛型或者其父类泛型<br>heroList的泛型可能是Hero<br>heroList的泛型可能是Object</p>
+<p><strong>可以往里面插入Hero以及Hero的子类</strong><br>但是取出来有风险，因为不确定取出来是Hero还是Object  </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestGeneric</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">  </span><br><span class="line">        ArrayList&lt;? <span class="keyword">super</span> Hero&gt; heroList = <span class="keyword">new</span> ArrayList&lt;Object&gt;();</span><br><span class="line">          </span><br><span class="line">        <span class="comment">//? super Hero 表示 heroList的泛型是Hero或者其父类泛型</span></span><br><span class="line">          </span><br><span class="line">        <span class="comment">//heroList 的泛型可以是Hero</span></span><br><span class="line">        <span class="comment">//heroList 的泛型可以是Object</span></span><br><span class="line">          </span><br><span class="line">        <span class="comment">//所以就可以插入Hero</span></span><br><span class="line">        heroList.add(<span class="keyword">new</span> Hero());</span><br><span class="line">        <span class="comment">//也可以插入Hero的子类</span></span><br><span class="line">        heroList.add(<span class="keyword">new</span> APHero());</span><br><span class="line">        heroList.add(<span class="keyword">new</span> ADHero());</span><br><span class="line">          </span><br><span class="line">        <span class="comment">//但是，不能从里面取数据出来,因为其泛型可能是Object,而Object是强转Hero会失败</span></span><br><span class="line">        Hero h= heroList.get(<span class="number">0</span>);</span><br><span class="line">          </span><br><span class="line">    &#125;</span><br><span class="line">  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>泛型通配符?</strong></li>
+</ul>
+<p>泛型通配符? 代表任意泛型<br>既然?代表任意泛型，那么换句话说，这个容器什么泛型都有可能</p>
+<p>所以只能以Object的形式取出来<br>并且不能往里面放对象，因为不知道到底是一个什么泛型的容器  </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestGeneric</span> </span>&#123;</span><br><span class="line">  </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">  </span><br><span class="line">        ArrayList&lt;APHero&gt; apHeroList = <span class="keyword">new</span> ArrayList&lt;APHero&gt;();</span><br><span class="line">         </span><br><span class="line">        <span class="comment">//?泛型通配符，表示任意泛型</span></span><br><span class="line">        ArrayList&lt;?&gt; generalList = apHeroList;</span><br><span class="line"> </span><br><span class="line">        <span class="comment">//?的缺陷1： 既然?代表任意泛型，那么换句话说，你就不知道这个容器里面是什么类型</span></span><br><span class="line">        <span class="comment">//所以只能以Object的形式取出来</span></span><br><span class="line">        Object o = generalList.get(<span class="number">0</span>);</span><br><span class="line"> </span><br><span class="line">        <span class="comment">//?的缺陷2： 既然?代表任意泛型，那么既有可能是Hero,也有可能是Item</span></span><br><span class="line">        <span class="comment">//所以，放哪种对象进去，都有风险，结果就什么什么类型的对象，都不能放进去</span></span><br><span class="line">        generalList.add(<span class="keyword">new</span> Item()); <span class="comment">//编译错误 因为?代表任意泛型，很有可能不是Item</span></span><br><span class="line">        generalList.add(<span class="keyword">new</span> Hero()); <span class="comment">//编译错误 因为?代表任意泛型，很有可能不是Hero</span></span><br><span class="line">        generalList.add(<span class="keyword">new</span> APHero()); <span class="comment">//编译错误  因为?代表任意泛型，很有可能不是APHero</span></span><br><span class="line">  </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>总结</strong></li>
+</ul>
+<p>如果希望只取出，不插入，就使用? extends Hero<br>如果希望只插入，不取出，就使用? super Hero<br>如果希望，又能插入，又能取出，就不要用通配符？</p>
+<ul>
+<li><strong>练习</strong></li>
+</ul>
+<p>如代码所示，为了遍历不同泛型的3种集合，需要设计3个方法</p>
+<p>借助? extends， 把代码减肥到只是用一种方法  </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestGeneric</span> </span>&#123;</span><br><span class="line"> </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">iterate</span><span class="params">(ArrayList&lt;Hero&gt; list)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">for</span> (Hero hero : list) &#123;</span><br><span class="line">            System.out.println(hero.name);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">iterateAP</span><span class="params">(ArrayList&lt;APHero&gt; list)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">for</span> (Hero hero : list) &#123;</span><br><span class="line">            System.out.println(hero.name);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">iterateAD</span><span class="params">(ArrayList&lt;ADHero&gt; list)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">for</span> (Hero hero : list) &#123;</span><br><span class="line">            System.out.println(hero.name);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        ArrayList&lt;Hero&gt; hs = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">        ArrayList&lt;APHero&gt; aphs = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">        ArrayList&lt;ADHero&gt; adhs = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line"> </span><br><span class="line">        iterate(hs);</span><br><span class="line">        iterateAP(aphs);</span><br><span class="line">        iterateAD(adhs);</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main3</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">iterate</span><span class="params">(ArrayList&lt;?extends Hero&gt; HERO)</span></span>&#123;</span><br><span class="line">        <span class="keyword">for</span> (Hero h:HERO)&#123;</span><br><span class="line">            System.out.println(h.name);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        ArrayList&lt;ADHero&gt; adhero=<span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">        ArrayList&lt;APHero&gt; aphero=<span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">        adhero.add(<span class="keyword">new</span> ADHero(<span class="string">"liu"</span>));</span><br><span class="line">        adhero.add(<span class="keyword">new</span> ADHero(<span class="string">"Ma"</span>));</span><br><span class="line">        aphero.add(<span class="keyword">new</span> APHero(<span class="string">"zhang"</span>));</span><br><span class="line">        aphero.add(<span class="keyword">new</span> APHero(<span class="string">"wang"</span>));</span><br><span class="line">        aphero.add(<span class="keyword">new</span> APHero(<span class="string">"zhou"</span>));</span><br><span class="line">        iterate(adhero);</span><br><span class="line">        iterate(aphero);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>*<em>2.&lt;T extends Comparable<T>&gt; *</T></em></p>
+<p>表示泛型T必须实现了Comparable<T>这个接口，比如Integer，Double等</T></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main6</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 正确</span></span><br><span class="line">        Node&lt;Integer&gt; node1 = <span class="keyword">new</span> Node&lt;&gt;();</span><br><span class="line">        <span class="comment">// 错误</span></span><br><span class="line">        Node&lt;Item&gt; node2 = <span class="keyword">new</span> Node&lt;&gt;();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Node</span>&lt;<span class="title">T</span> <span class="keyword">extends</span> <span class="title">Comparable</span>&lt;<span class="title">T</span>&gt;&gt; </span>&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Item</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>3.泛型转型</strong></p>
+<p>子类泛型转父类泛型</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestGeneric</span> </span>&#123;</span><br><span class="line"> </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        ArrayList&lt;Hero&gt; hs =<span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">        ArrayList&lt;ADHero&gt; adhs =<span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line"> </span><br><span class="line">        <span class="comment">//子类泛型转父类泛型</span></span><br><span class="line">        <span class="comment">// 错误</span></span><br><span class="line">        hs = adhs;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>父类泛型转子类泛型</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestGeneric</span> </span>&#123;</span><br><span class="line">  </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        ArrayList&lt;Hero&gt; hs =<span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">        ArrayList&lt;ADHero&gt; adhs =<span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">  </span><br><span class="line">        <span class="comment">//父类泛型转子类泛型，能否成功？为什么？</span></span><br><span class="line">        <span class="comment">// 错误</span></span><br><span class="line">        adhs = hs;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">java</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/04/23/java%E6%B3%9B%E5%9E%8B01/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+
+  
     <article id="post-Arrays.sort()和Collections.sort()的用法" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -172,8 +442,8 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="Arrays-sort-和Collections-sort-的用法"><a href="#Arrays-sort-和Collections-sort-的用法" class="headerlink" title="Arrays.sort()和Collections.sort()的用法"></a>Arrays.sort()和Collections.sort()的用法</h2><p>Comparable 用作默认的比较方式 </p>
-<p>Comparator 用作自定义的比较方式，当默认的比较方式不适用时或者没有提供默认的比较方式，使用Comparator就非常有用。</p>
+        <h2 id="Arrays-sort-和Collections-sort-的用法"><a href="#Arrays-sort-和Collections-sort-的用法" class="headerlink" title="Arrays.sort()和Collections.sort()的用法"></a>Arrays.sort()和Collections.sort()的用法</h2><p>Comparable 用作默认的比较方式。<strong>实现compareTo方法</strong></p>
+<p>Comparator 用作自定义的比较方式，当默认的比较方式不适用时或者没有提供默认的比较方式，使用Comparator就非常有用。<strong>实现compare方法</strong></p>
         
       
 
@@ -734,153 +1004,6 @@
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2020/04/21/github%E5%85%A5%E9%97%A8%E9%85%8D%E7%BD%AE/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-
-  
-    <article id="post-如何搭建博客" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/04/20/%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2/">如何搭建博客</a>
-    </h1>
-  
-
-        
-        <a href="/2020/04/20/%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2/" class="archive-article-date">
-  	<time datetime="2020-04-20T11:24:19.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-04-20</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="使用Hexo框架搭建geihub博客"><a href="#使用Hexo框架搭建geihub博客" class="headerlink" title="使用Hexo框架搭建geihub博客"></a>使用Hexo框架搭建geihub博客</h1><h2 id="在本地搭建博客"><a href="#在本地搭建博客" class="headerlink" title="在本地搭建博客"></a>在本地搭建博客</h2><p>1.前往nodejs.org，下载并安装node.js</p>
-<p>2.创建blog文件夹，此后所有命令均在此文件夹下操作</p>
-<p>3.在cmd命令行测试是否安装成功</p>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">hexo</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/04/20/%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-
-  
-    <article id="post-test" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/04/20/test/">test</a>
-    </h1>
-  
-
-        
-        <a href="/2020/04/20/test/" class="archive-article-date">
-  	<time datetime="2020-04-19T21:17:48.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-04-20</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="这是我的第一个测试"><a href="#这是我的第一个测试" class="headerlink" title="这是我的第一个测试"></a>这是我的第一个测试</h2><ol>
-<li>试着写一写</li>
-<li>巴啦啦能量魔仙变身</li>
-<li>你已经死了</li>
-<li>我不做人啦</li>
-<li>love is war</li>
-</ol>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/04/20/test/">展开全文 >></a>
         </p>
       
 
