@@ -6,15 +6,22 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>slyfox1201的博客</title>
+  <title>java8特性 | slyfox1201的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="slyfox1201的博客">
-<meta property="og:url" content="http://yoursite.com/index.html">
+  <meta name="description" content="1.lambda表达式也可称为闭包 以下是lambda表达式的重要特征:">
+<meta property="og:type" content="article">
+<meta property="og:title" content="java8特性">
+<meta property="og:url" content="http://yoursite.com/2020/04/26/java8%E7%89%B9%E6%80%A7/index.html">
 <meta property="og:site_name" content="slyfox1201的博客">
+<meta property="og:description" content="1.lambda表达式也可称为闭包 以下是lambda表达式的重要特征:">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://yoursite.com/2020/04/26/java8%E7%89%B9%E6%80%A7/Stream.png">
+<meta property="article:published_time" content="2020-04-26T13:26:00.000Z">
+<meta property="article:modified_time" content="2020-04-27T08:36:15.767Z">
 <meta property="article:author" content="slyfox1201">
+<meta property="article:tag" content="java">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2020/04/26/java8%E7%89%B9%E6%80%A7/Stream.png">
   
     <link rel="alternative" href="/atom.xml" title="slyfox1201的博客" type="application/atom+xml">
   
@@ -150,16 +157,14 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-    <article id="post-java8特性" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+            <article id="post-java8特性" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/04/26/java8%E7%89%B9%E6%80%A7/">java8特性</a>
+    <h1 class="article-title" itemprop="name">
+      java8特性
     </h1>
   
 
@@ -174,9 +179,92 @@
       
         <h3 id="1-lambda表达式"><a href="#1-lambda表达式" class="headerlink" title="1.lambda表达式"></a>1.lambda表达式</h3><p>也可称为闭包</p>
 <p>以下是lambda表达式的重要特征:</p>
-        
+<a id="more"></a>
+
+<ul>
+<li><strong>可选类型声明：</strong>不需要声明参数类型，编译器可以统一识别参数值。</li>
+<li><strong>可选的参数圆括号：</strong>一个参数无需定义圆括号，但多个参数需要定义圆括号。</li>
+<li><strong>可选的大括号：</strong>如果主体包含了一个语句，就不需要使用大括号。</li>
+<li><strong>可选的返回关键字：</strong>如果主体只有一个表达式返回值则编译器会自动返回值，大括号需要指定明表达式返回了一个数值。</li>
+</ul>
+<h4 id="Lambda-表达式的简单例子"><a href="#Lambda-表达式的简单例子" class="headerlink" title="Lambda 表达式的简单例子:"></a>Lambda 表达式的简单例子:</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 1. 不需要参数,返回值为 5  </span></span><br><span class="line">() -&gt; <span class="number">5</span>  </span><br><span class="line">  </span><br><span class="line"><span class="comment">// 2. 接收一个参数(数字类型),返回其2倍的值  </span></span><br><span class="line">x -&gt; <span class="number">2</span> * x  </span><br><span class="line">  </span><br><span class="line"><span class="comment">// 3. 接受2个参数(数字),并返回他们的差值  </span></span><br><span class="line">(x, y) -&gt; x – y  </span><br><span class="line">  </span><br><span class="line"><span class="comment">// 4. 接收2个int型整数,返回他们的和  </span></span><br><span class="line">(<span class="keyword">int</span> x, <span class="keyword">int</span> y) -&gt; x + y  </span><br><span class="line">  </span><br><span class="line"><span class="comment">// 5. 接受一个 string 对象,并在控制台打印,不返回任何值(看起来像是返回void)  </span></span><br><span class="line">(String s) -&gt; System.out.print(s)</span><br></pre></td></tr></table></figure>
+
+<h4 id="变量作用域"><a href="#变量作用域" class="headerlink" title="变量作用域"></a>变量作用域</h4><p>lambda 表达式只能引用标记了 final 的外层局部变量，这就是说不能在 lambda 内部修改定义在域外的局部变量，否则会编译错误。</p>
+<p>我们可以直接在 lambda 表达式中访问外层的局部变量：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Java8Tester</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String args[])</span> </span>&#123;</span><br><span class="line">        <span class="keyword">final</span> <span class="keyword">int</span> num = <span class="number">1</span>;</span><br><span class="line">        Converter&lt;Integer, String&gt; s = (param) -&gt; System.out.println(String.valueOf(param + num));</span><br><span class="line">        s.convert(<span class="number">2</span>);  <span class="comment">// 输出结果为 3</span></span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    <span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Converter</span>&lt;<span class="title">T1</span>, <span class="title">T2</span>&gt; </span>&#123;</span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">convert</span><span class="params">(<span class="keyword">int</span> i)</span></span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>lambda 表达式的局部变量可以不用声明为 final，但是必须不可被后面的代码修改（即隐性的具有 final 的语义）</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> num = <span class="number">1</span>;  </span><br><span class="line">Converter&lt;Integer, String&gt; s = (param) -&gt; System.out.println(String.valueOf(param + num));</span><br><span class="line">s.convert(<span class="number">2</span>);</span><br><span class="line">num = <span class="number">5</span>;  </span><br><span class="line"><span class="comment">//报错信息：Local variable num defined in an enclosing scope must be final or effectively </span></span><br><span class="line"> <span class="keyword">final</span></span><br></pre></td></tr></table></figure>
+
+<p>在 Lambda 表达式当中不允许声明一个与局部变量同名的参数或者局部变量。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">String first = <span class="string">""</span>;  </span><br><span class="line">Comparator&lt;String&gt; comparator = (first, second) -&gt; Integer.compare(first.length(), second.length());  <span class="comment">//编译会出错</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="lambda常用于匿名类"><a href="#lambda常用于匿名类" class="headerlink" title="lambda常用于匿名类"></a>lambda常用于匿名类</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main1</span> </span>&#123;</span><br><span class="line">    <span class="class"><span class="keyword">interface</span> <span class="title">Printer</span> </span>&#123;</span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">printer</span><span class="params">(String val)</span></span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">printSomething</span><span class="params">(String something, Printer printer)</span> </span>&#123;</span><br><span class="line">        printer.printer(something);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Printer printer = <span class="keyword">new</span> Printer() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">printer</span><span class="params">(String val)</span> </span>&#123;</span><br><span class="line">                System.out.println(val);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line">        Main1 main1 = <span class="keyword">new</span> Main1();</span><br><span class="line">        main1.printSomething(<span class="string">"hello world"</span>, printer);</span><br><span class="line"></span><br><span class="line">        Printer printer1 = (String val) -&gt; &#123;</span><br><span class="line">            System.out.println(val);</span><br><span class="line">        &#125;;</span><br><span class="line">        main1.printSomething(<span class="string">"hello lambda1"</span>, printer1);</span><br><span class="line"></span><br><span class="line">        Printer printer2 = val -&gt; System.out.println(val);</span><br><span class="line">        main1.printSomething(<span class="string">"hello lambda2"</span>, printer2);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 方法引用，自动识别参数及返回值，均满足Printer接口时，才不会报错</span></span><br><span class="line">        Printer printer3 = System.out::println;</span><br><span class="line">        main1.printSomething(<span class="string">"hello lambda3"</span>, printer3);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-Stream-API"><a href="#2-Stream-API" class="headerlink" title="2.Stream API"></a>2.Stream API</h3><p>原文链接： <a href="zimug.com"></a></p>
+<p>初识</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main2</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        List&lt;String&gt; players = Arrays.asList(<span class="string">"kobe"</span>, <span class="string">"james"</span>, <span class="string">"curry"</span>, <span class="string">"cxk"</span>);</span><br><span class="line"></span><br><span class="line">        List&lt;String&gt; sorted = players.stream()</span><br><span class="line">                .filter(s -&gt; s.startsWith(<span class="string">"c"</span>))</span><br><span class="line">                .map(String::toUpperCase)</span><br><span class="line">                .sorted()</span><br><span class="line">                .collect(Collectors.toList());</span><br><span class="line">        System.out.println(sorted);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main3</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            Stream&lt;String&gt; stringStream = Files.lines(Path.of(<span class="string">"out.txt"</span>));</span><br><span class="line">            stringStream.forEach(System.out::println);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main4</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Integer[] array1 = &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>&#125;;</span><br><span class="line">        Stream.of(array1)                            <span class="comment">// return Stream&lt;Integer&gt;</span></span><br><span class="line">                .forEach(System.out::println);    <span class="comment">// prints 1, 2, 3, ...</span></span><br><span class="line"></span><br><span class="line">        Integer[] array2 = &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>&#125;;</span><br><span class="line">        Arrays.stream(array2)                        <span class="comment">// return Stream&lt;Integer&gt;</span></span><br><span class="line">                .forEach(System.out::println);    <span class="comment">// prints 1, 2, 3, ...</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">int</span>[] array3 = &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>&#125;;</span><br><span class="line">        Arrays.stream(array3)                    <span class="comment">// returns IntStream</span></span><br><span class="line">                .forEach(System.out::println);    <span class="comment">// prints 1, 2, 3, ...</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// 此处翻车，原因未去了解，因此优先使用 Arrays.stream()</span></span><br><span class="line">        <span class="keyword">int</span>[] array4 = &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>&#125;;</span><br><span class="line">        Stream.of(array4)                        <span class="comment">// returns Stream&lt;int[]&gt;</span></span><br><span class="line">                .forEach(System.out::println);    <span class="comment">// prints [I@27d6c5e0</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="谓词逻辑Predicate"><a href="#谓词逻辑Predicate" class="headerlink" title="谓词逻辑Predicate"></a>谓词逻辑Predicate</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">Stream&lt;T&gt; <span class="title">filter</span><span class="params">(Predicate&lt;? <span class="keyword">super</span> T&gt; predicate)</span></span>;</span><br></pre></td></tr></table></figure>
+
+<h4 id="什么是谓词逻辑"><a href="#什么是谓词逻辑" class="headerlink" title="什么是谓词逻辑"></a>什么是谓词逻辑</h4><p>where 和 and 限定了主语employee是什么，那么where和and语句所表达的逻辑就是谓词逻辑</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">SELECT *</span><br><span class="line">FROM employee</span><br><span class="line">WHERE age &gt; 70</span><br><span class="line">AND gender &#x3D; &#39;M&#39;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main5</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Employee e1 = <span class="keyword">new</span> Employee(<span class="number">1</span>, <span class="number">23</span>, <span class="string">"M"</span>, <span class="string">"A"</span>, <span class="string">"1"</span>);</span><br><span class="line">        Employee e2 = <span class="keyword">new</span> Employee(<span class="number">2</span>, <span class="number">13</span>, <span class="string">"F"</span>, <span class="string">"B"</span>, <span class="string">"2"</span>);</span><br><span class="line">        Employee e3 = <span class="keyword">new</span> Employee(<span class="number">3</span>, <span class="number">43</span>, <span class="string">"M"</span>, <span class="string">"C"</span>, <span class="string">"3"</span>);</span><br><span class="line">        Employee e4 = <span class="keyword">new</span> Employee(<span class="number">4</span>, <span class="number">26</span>, <span class="string">"M"</span>, <span class="string">"D"</span>, <span class="string">"4"</span>);</span><br><span class="line">        Employee e5 = <span class="keyword">new</span> Employee(<span class="number">5</span>, <span class="number">19</span>, <span class="string">"F"</span>, <span class="string">"E"</span>, <span class="string">"5"</span>);</span><br><span class="line">        Employee e6 = <span class="keyword">new</span> Employee(<span class="number">6</span>, <span class="number">15</span>, <span class="string">"M"</span>, <span class="string">"F"</span>, <span class="string">"6"</span>);</span><br><span class="line">        Employee e7 = <span class="keyword">new</span> Employee(<span class="number">7</span>, <span class="number">68</span>, <span class="string">"F"</span>, <span class="string">"G"</span>, <span class="string">"7"</span>);</span><br><span class="line">        Employee e8 = <span class="keyword">new</span> Employee(<span class="number">8</span>, <span class="number">79</span>, <span class="string">"M"</span>, <span class="string">"Aa"</span>, <span class="string">"8"</span>);</span><br><span class="line">        Employee e9 = <span class="keyword">new</span> Employee(<span class="number">9</span>, <span class="number">15</span>, <span class="string">"F"</span>, <span class="string">"AAa"</span>, <span class="string">"9"</span>);</span><br><span class="line">        Employee e10 = <span class="keyword">new</span> Employee(<span class="number">10</span>, <span class="number">45</span>, <span class="string">"M"</span>, <span class="string">"AaA"</span>, <span class="string">"10"</span>);</span><br><span class="line"></span><br><span class="line">        List&lt;Employee&gt; employees = Arrays.asList(e1, e2, e3, e4, e5, e6, e7, e8, e9, e10);</span><br><span class="line">        <span class="comment">// filter中的lambda就是谓词逻辑</span></span><br><span class="line">        List&lt;Employee&gt; result = employees.stream()</span><br><span class="line">                .filter(e -&gt; e.getAge() &gt; <span class="number">70</span> &amp;&amp; e.getGender().equals(<span class="string">"M"</span>))</span><br><span class="line">                .collect(Collectors.toList());</span><br><span class="line">        System.out.println(result);</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 使用Predicate后，效果与上面相同</span></span><br><span class="line">        result = employees.stream()</span><br><span class="line">                .filter(Employee.ageGreaterThan70.and(Employee.genderM))</span><br><span class="line">                .collect(Collectors.toList());</span><br><span class="line">        System.out.println(result);</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 把每一项的年龄加一，并且替换性别表示方法</span></span><br><span class="line">        result = employees.stream()</span><br><span class="line">                .map(e -&gt; &#123;</span><br><span class="line">                    e.setAge(e.getAge() + <span class="number">1</span>);</span><br><span class="line">                    e.setGender(e.getGender().equals(<span class="string">"M"</span>) ? <span class="string">"male"</span> : <span class="string">"female"</span>);</span><br><span class="line">                    <span class="keyword">return</span> e;</span><br><span class="line">                &#125;)</span><br><span class="line">                .collect(Collectors.toList());</span><br><span class="line">        System.out.println(result);</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 当map的接收值与返回值一致时，可以使用peek来替换map，从而省略return语句</span></span><br><span class="line">        result = employees.stream()</span><br><span class="line">                .peek(e -&gt; &#123;</span><br><span class="line">                    e.setAge(e.getAge() + <span class="number">1</span>);</span><br><span class="line">                    e.setGender(e.getGender().equals(<span class="string">"M"</span>) ? <span class="string">"male"</span> : <span class="string">"female"</span>);</span><br><span class="line">                &#125;)</span><br><span class="line">                .collect(Collectors.toList());</span><br><span class="line">        System.out.println(result);</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 按照年龄从小到大排序</span></span><br><span class="line">        result = employees.stream()</span><br><span class="line">                .sorted((o1, o2) -&gt; o1.getAge() - o2.getAge())</span><br><span class="line">                .collect(Collectors.toList());</span><br><span class="line">        System.out.println(result);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Employee</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Integer id;</span><br><span class="line">    <span class="keyword">private</span> Integer age;</span><br><span class="line">    <span class="keyword">private</span> String gender;</span><br><span class="line">    <span class="keyword">private</span> String firstName;</span><br><span class="line">    <span class="keyword">private</span> String lastName;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Predicate&lt;Employee&gt; ageGreaterThan70 = x -&gt; x.getAge() &gt; <span class="number">70</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Predicate&lt;Employee&gt; genderM = x -&gt; x.getGender().equals(<span class="string">"M"</span>);</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"Employee&#123;"</span> +</span><br><span class="line">                <span class="string">"id="</span> + id +</span><br><span class="line">                <span class="string">", age="</span> + age +</span><br><span class="line">                <span class="string">", gender='"</span> + gender + <span class="string">'\''</span> +</span><br><span class="line">                <span class="string">", firstName='"</span> + firstName + <span class="string">'\''</span> +</span><br><span class="line">                <span class="string">", lastName='"</span> + lastName + <span class="string">'\''</span> +</span><br><span class="line">                <span class="string">'&#125;'</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Employee</span><span class="params">(Integer id, Integer age, String gender, String firstName, String lastName)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.id = id;</span><br><span class="line">        <span class="keyword">this</span>.age = age;</span><br><span class="line">        <span class="keyword">this</span>.gender = gender;</span><br><span class="line">        <span class="keyword">this</span>.firstName = firstName;</span><br><span class="line">        <span class="keyword">this</span>.lastName = lastName;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Integer <span class="title">getId</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> id;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setId</span><span class="params">(Integer id)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.id = id;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Integer <span class="title">getAge</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> age;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setAge</span><span class="params">(Integer age)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.age = age;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getGender</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> gender;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setGender</span><span class="params">(String gender)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.gender = gender;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getFirstName</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> firstName;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setFirstName</span><span class="params">(String firstName)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.firstName = firstName;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getLastName</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> lastName;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setLastName</span><span class="params">(String lastName)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.lastName = lastName;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>当管道流中存在另一管道流，可以使用flatMap来处理内部管道流</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main6</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        List&lt;String&gt; words = Arrays.asList(<span class="string">"hello"</span>, <span class="string">"world"</span>);</span><br><span class="line">        words.stream()</span><br><span class="line">                .map(w -&gt; Arrays.stream(w.split(<span class="string">""</span>)))</span><br><span class="line">                .forEach(System.out::println);</span><br><span class="line">        words.stream()</span><br><span class="line">                .flatMap(w -&gt; Arrays.stream(w.split(<span class="string">""</span>)))</span><br><span class="line">                .forEach(System.out::println);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">java.util.stream.ReferencePipeline$Head@7a0ac6e3</span></span><br><span class="line"><span class="comment">java.util.stream.ReferencePipeline$Head@71be98f5</span></span><br><span class="line"><span class="comment">h</span></span><br><span class="line"><span class="comment">e</span></span><br><span class="line"><span class="comment">l</span></span><br><span class="line"><span class="comment">l</span></span><br><span class="line"><span class="comment">o</span></span><br><span class="line"><span class="comment">w</span></span><br><span class="line"><span class="comment">o</span></span><br><span class="line"><span class="comment">r</span></span><br><span class="line"><span class="comment">l</span></span><br><span class="line"><span class="comment">d</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="状态与并行"><a href="#状态与并行" class="headerlink" title="状态与并行"></a>状态与并行</h4><p><img src="/2020/04/26/java8%E7%89%B9%E6%80%A7/Stream.png" alt="Stream"></p>
+<p>有状态操作不能使用并行流来处理，否则会出错！</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main7</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        List&lt;String&gt; words = Arrays.asList(<span class="string">"A"</span>, <span class="string">"B"</span>, <span class="string">"C"</span>, <span class="string">"D"</span>, <span class="string">"A"</span>);</span><br><span class="line"></span><br><span class="line">        words.stream().limit(<span class="number">2</span>).forEach(System.out::print);</span><br><span class="line">        System.out.println();</span><br><span class="line">        words.stream().skip(<span class="number">2</span>).forEach(System.out::print);</span><br><span class="line">        System.out.println();</span><br><span class="line">        words.stream().distinct().forEach(System.out::print);</span><br><span class="line">        System.out.println();</span><br><span class="line">        words.stream().sorted().forEach(System.out::print);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 有状态操作不要使用parallel方法，下面是错误示例</span></span><br><span class="line">        <span class="comment">// words.stream().parallel().sorted().forEach(System.out::print);</span></span><br><span class="line">        <span class="comment">// 默认不加的时候就是sequential，即线性</span></span><br><span class="line">        <span class="comment">// words.stream().sequential().sorted().forEach(System.out::print);</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">AB</span></span><br><span class="line"><span class="comment">CDA</span></span><br><span class="line"><span class="comment">ABCD</span></span><br><span class="line"><span class="comment">AABCD</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="函数式接口"><a href="#函数式接口" class="headerlink" title="函数式接口"></a>函数式接口</h4><ul>
+<li>接口有且只有一个抽象方法</li>
+<li>允许定义静态非抽象方法</li>
+<li>允许定义默认default非抽象方法</li>
+<li>允许java.lang.Object中的public方法</li>
+<li>FunctionalInterface注解不是必须的</li>
+</ul>
+<p>eg.  Comparator 接口</p>
+<p>lambda表达式在替代匿名类时，该匿名类对应的接口必须是函数式接口，否则报错（lambda不知道替换接口里的哪个方法，导致报错）</p>
+
       
 
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/assets/img/wechat.png">
+                      <span class="reward-type">微信</span>
+                    </div>
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
       
     </div>
     <div class="article-info article-info-index">
@@ -196,16 +284,75 @@
       
 
       
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/04/26/java8%E7%89%B9%E6%80%A7/">展开全文 >></a>
-        </p>
-      
 
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
+        </div>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2020/04/26/java8%E7%89%B9%E6%80%A7/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
       
       <div class="clearfix"></div>
     </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
+  
+  
+    <a href="/2020/04/23/java%E6%B3%9B%E5%9E%8B02/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">java泛型02</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
 
 <aside class="wrap-side-operation">
     <div class="mod-side-operation">
@@ -220,709 +367,34 @@
         </div>
         
         
-    </div>
-</aside>
-
-
-
-
-
-  
-    <article id="post-java泛型02" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/04/23/java%E6%B3%9B%E5%9E%8B02/">java泛型02</a>
-    </h1>
-  
-
-        
-        <a href="/2020/04/23/java%E6%B3%9B%E5%9E%8B02/" class="archive-article-date">
-  	<time datetime="2020-04-23T14:23:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-04-23</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>​    原文链接：     <a href="https://www.cnblogs.com/cherryljr/p/6880657.html" target="_blank" rel="noopener">https://www.cnblogs.com/cherryljr/p/6880657.html</a> </p>
-<p>​        在观察Java源码的时候，发现了这么一个写法T extends Comparable&lt;? super T&gt;。不禁纳闷为什么要这么写呢？有什么好处吗，extends和super在这里的作用着实让人有点不清楚。</p>
-<p>　　接下来，我将结合代码跟大家分享一下我关于这里泛型应用的看法。</p>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">java</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/04/23/java%E6%B3%9B%E5%9E%8B02/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
+        <div class="toc-container tooltip-left">
+            <i class="icon-font icon-category"></i>
+            <div class="tooltip tooltip-east">
+                <span class="tooltip-item">
+                </span>
+                <span class="tooltip-content">
+                    <div class="toc-article">
+                    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-lambda表达式"><span class="toc-number">1.</span> <span class="toc-text">1.lambda表达式</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Lambda-表达式的简单例子"><span class="toc-number">1.1.</span> <span class="toc-text">Lambda 表达式的简单例子:</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#变量作用域"><span class="toc-number">1.2.</span> <span class="toc-text">变量作用域</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#lambda常用于匿名类"><span class="toc-number">1.3.</span> <span class="toc-text">lambda常用于匿名类</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-Stream-API"><span class="toc-number">2.</span> <span class="toc-text">2.Stream API</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#谓词逻辑Predicate"><span class="toc-number">2.1.</span> <span class="toc-text">谓词逻辑Predicate</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#什么是谓词逻辑"><span class="toc-number">2.2.</span> <span class="toc-text">什么是谓词逻辑</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#状态与并行"><span class="toc-number">2.3.</span> <span class="toc-text">状态与并行</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#函数式接口"><span class="toc-number">2.4.</span> <span class="toc-text">函数式接口</span></a></li></ol></li></ol>
+                    </div>
+                </span>
             </div>
         </div>
         
-        
     </div>
 </aside>
 
 
 
-
-
-  
-    <article id="post-java泛型01" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/04/23/java%E6%B3%9B%E5%9E%8B01/">java泛型01</a>
-    </h1>
-  
-
-        
-        <a href="/2020/04/23/java%E6%B3%9B%E5%9E%8B01/" class="archive-article-date">
-  	<time datetime="2020-04-23T14:07:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-04-23</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><strong>1.通配符 ?</strong></p>
-<p>&lt;? extends Hero&gt;</p>
-<p>?只能是一个值，即该值是Hero，或者是ADHero，或者是APHero</p>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">java</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/04/23/java%E6%B3%9B%E5%9E%8B01/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-
-  
-    <article id="post-Arrays.sort()和Collections.sort()的用法" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/04/22/Arrays.sort()%E5%92%8CCollections.sort()%E7%9A%84%E7%94%A8%E6%B3%95/">Arrays.sort()和Collections.sort()的用法</a>
-    </h1>
-  
-
-        
-        <a href="/2020/04/22/Arrays.sort()%E5%92%8CCollections.sort()%E7%9A%84%E7%94%A8%E6%B3%95/" class="archive-article-date">
-  	<time datetime="2020-04-22T02:14:53.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-04-22</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="Arrays-sort-和Collections-sort-的用法"><a href="#Arrays-sort-和Collections-sort-的用法" class="headerlink" title="Arrays.sort()和Collections.sort()的用法"></a>Arrays.sort()和Collections.sort()的用法</h2><p>Comparable 用作默认的比较方式。<strong>实现compareTo方法</strong></p>
-<p>Comparator 用作自定义的比较方式，当默认的比较方式不适用时或者没有提供默认的比较方式，使用Comparator就非常有用。<strong>实现compare方法</strong></p>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">java</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/04/22/Arrays.sort()%E5%92%8CCollections.sort()%E7%9A%84%E7%94%A8%E6%B3%95/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-
-  
-    <article id="post-java集合框架与c++STL使用方法对比" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/04/22/java%E9%9B%86%E5%90%88%E6%A1%86%E6%9E%B6%E4%B8%8Ec++STL%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95%E5%AF%B9%E6%AF%94/">java集合框架与c++STL使用方法对比</a>
-    </h1>
-  
-
-        
-        <a href="/2020/04/22/java%E9%9B%86%E5%90%88%E6%A1%86%E6%9E%B6%E4%B8%8Ec++STL%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95%E5%AF%B9%E6%AF%94/" class="archive-article-date">
-  	<time datetime="2020-04-22T02:13:53.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-04-22</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>以int为例，给出两者在算法题中的等价形式</p>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">java</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/04/22/java%E9%9B%86%E5%90%88%E6%A1%86%E6%9E%B6%E4%B8%8Ec++STL%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95%E5%AF%B9%E6%AF%94/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-
-  
-    <article id="post-javaIO-流" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/04/22/javaIO-%E6%B5%81/">javaIO-流</a>
-    </h1>
-  
-
-        
-        <a href="/2020/04/22/javaIO-%E6%B5%81/" class="archive-article-date">
-  	<time datetime="2020-04-22T02:12:53.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-04-22</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>原文地址  <a href="https://how2j.cn?p=124956" target="_blank" rel="noopener">https://how2j.cn?p=124956</a>  </p>
-<p><strong>1.字节流</strong></p>
-<p>以字节流的形式向文件写入数据</p>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">java</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/04/22/javaIO-%E6%B5%81/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-
-  
-    <article id="post-java中文编码" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/04/22/java%E4%B8%AD%E6%96%87%E7%BC%96%E7%A0%81/">java中文编码</a>
-    </h1>
-  
-
-        
-        <a href="/2020/04/22/java%E4%B8%AD%E6%96%87%E7%BC%96%E7%A0%81/" class="archive-article-date">
-  	<time datetime="2020-04-22T02:11:53.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-04-22</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>原文地址  <a href="https://how2j.cn?p=124956" target="_blank" rel="noopener">https://how2j.cn?p=124956</a>  </p>
-<p><strong>1.以字符 中 为例，查看其在不同编码方式下的值是多少</strong></p>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">java</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/04/22/java%E4%B8%AD%E6%96%87%E7%BC%96%E7%A0%81/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-
-  
-    <article id="post-javaIO-文件操作" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/04/22/javaIO-%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C/">javaIO-文件操作</a>
-    </h1>
-  
-
-        
-        <a href="/2020/04/22/javaIO-%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C/" class="archive-article-date">
-  	<time datetime="2020-04-22T02:10:53.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-04-22</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>原文地址  <a href="https://how2j.cn?p=124956" target="_blank" rel="noopener">https://how2j.cn?p=124956</a>  </p>
-<p><strong>1.创建File的两种方式</strong></p>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">java</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/04/22/javaIO-%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-
-  
-    <article id="post-java异常" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/04/21/java%E5%BC%82%E5%B8%B8/">java异常</a>
-    </h1>
-  
-
-        
-        <a href="/2020/04/21/java%E5%BC%82%E5%B8%B8/" class="archive-article-date">
-  	<time datetime="2020-04-21T02:21:53.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-04-21</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>记录自己对java不熟悉的各种细节**</p>
-<h3 id="java异常Error和Exception的区别"><a href="#java异常Error和Exception的区别" class="headerlink" title="java异常Error和Exception的区别"></a>java异常Error和Exception的区别</h3><p>（原文链接 <a href="https://blog.csdn.net/iblade/article/details/78196016" target="_blank" rel="noopener">https://blog.csdn.net/iblade/article/details/78196016</a> ）</p>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">java</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/04/21/java%E5%BC%82%E5%B8%B8/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-
-  
-    <article id="post-java基础" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/04/21/java%E5%9F%BA%E7%A1%80/">java基础</a>
-    </h1>
-  
-
-        
-        <a href="/2020/04/21/java%E5%9F%BA%E7%A1%80/" class="archive-article-date">
-  	<time datetime="2020-04-21T02:20:53.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-04-21</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>原文地址  <a href="https://how2j.cn?p=124956" target="_blank" rel="noopener">https://how2j.cn?p=124956</a>  </p>
-<p><strong>记录自己对java不熟悉的各种细节</strong></p>
-<p>1.一个整数对应的二进制的方法</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Integer.toBinaryString(<span class="keyword">int</span> i); <span class="comment">// return String</span></span><br></pre></td></tr></table></figure>
-
-<p>2.当一个变量被final修饰的时候，该变量<strong>只有一次赋值的机会</strong></p>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">java</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/04/21/java%E5%9F%BA%E7%A1%80/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-
   
   
-    <nav id="page-nav">
-      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next »</a>
-    </nav>
   
+
+  
+
+  
+
+  
+
 
 
           </div>
@@ -947,8 +419,8 @@
     <script>
 	var yiliaConfig = {
 		mathjax: false,
-		isHome: true,
-		isPost: false,
+		isHome: false,
+		isPost: true,
 		isArchive: false,
 		isTag: false,
 		isCategory: false,
